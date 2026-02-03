@@ -17,6 +17,16 @@ import { createClient } from "@/lib/supabase/client";
 
 const ITEMS_PER_PAGE = 10;
 
+// Mapping gioco → video hero (l'utente può sostituire i file video)
+const GAME_VIDEOS: Record<string, string> = {
+  "": "/files/hero-1.mp4",      // Default (tutti i giochi)
+  magic: "/files/hero-2.mp4",   // Magic: The Gathering
+  pokemon: "/files/hero-3.mp4", // Pokémon
+  onepiece: "/files/hero-4.mp4",// One Piece
+  yugioh: "/files/hero-1.mp4",  // Yu-Gi-Oh! (sostituire con video dedicato)
+  other: "/files/hero-1.mp4",   // Altri giochi
+};
+
 export default function TorneiPage() {
   const [game, setGame] = useState<string>("");
   const [province, setProvince] = useState<string>("");
@@ -95,11 +105,12 @@ export default function TorneiPage() {
     <>
       <Header />
       <main className="min-h-screen pt-20 pb-20">
-        {/* Hero video: sticky, resta fermo mentre scrolli */}
+        {/* Hero video: sticky, cambia in base al gioco selezionato */}
         <section className="sticky top-0 h-[60vh] overflow-hidden -z-10">
           <video
-            className="absolute inset-0 w-full h-full object-cover"
-            src="/files/hero-1.mp4"
+            key={game} // Force re-render quando cambia il gioco
+            className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500"
+            src={GAME_VIDEOS[game] || GAME_VIDEOS[""]}
             autoPlay
             muted
             loop

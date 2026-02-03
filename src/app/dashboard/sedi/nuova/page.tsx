@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useUser } from "@/hooks/useUser";
-import { useCreateStore } from "@/hooks/useStores";
+import { useCreateStore, useCheckStoreName } from "@/hooks/useStores";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Select } from "@/components/ui/Select";
@@ -28,6 +28,9 @@ export default function NuovaSedePage() {
     discord: "",
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
+  
+  // Verifica disponibilità nome in tempo reale
+  const { data: nameCheck, isLoading: checkingName } = useCheckStoreName(formData.name);
 
   const handleChange = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -43,6 +46,15 @@ export default function NuovaSedePage() {
     }
     if (!formData.name.trim()) {
       setErrors({ name: "Il nome è obbligatorio" });
+      return;
+    }
+    // Verifica disponibilità nome prima di procedere
+    if (nameCheck && !nameCheck.available) {
+      if (nameCheck.reason === "reserved") {
+        setErrors({ name: "Questo nome è riservato e non può essere utilizzato" });
+      } else if (nameCheck.reason === "taken") {
+        setErrors({ name: "Questo nome è già in uso da un altro negozio" });
+      }
       return;
     }
     try {
@@ -92,14 +104,45 @@ export default function NuovaSedePage() {
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-4">
-        <Input
-          label="Nome negozio *"
-          value={formData.name}
-          onChange={(e) => handleChange("name", e.target.value)}
-          placeholder="es. Dragon Cards Roma"
-          error={errors.name}
-          required
-        />
+        <div className="space-y-1">
+          <Input
+            label="Nome negozio *"
+            value={formData.name}
+            onChange={(e) => handleChange("name", e.target.value)}
+            placeholder="es. Dragon Cards Roma"
+            error={errors.name}
+            required
+          />
+          {/* Feedback disponibilità nome */}
+          {formData.name.trim().length >= 3 && (
+            <div className="flex items-center gap-2 text-xs">
+              {checkingName ? (
+                <span className="text-muted">Verifica disponibilità...</span>
+              ) : nameCheck?.available ? (
+                <span className="text-green-400 flex items-center gap-1">
+                  <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  </svg>
+                  Nome disponibile
+                </span>
+              ) : nameCheck?.reason === "reserved" ? (
+                <span className="text-red-400 flex items-center gap-1">
+                  <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+                  </svg>
+                  Questo nome è riservato
+                </span>
+              ) : nameCheck?.reason === "taken" ? (
+                <span className="text-red-400 flex items-center gap-1">
+                  <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+                  </svg>
+                  Nome già in uso
+                </span>
+              ) : null}
+            </div>
+          )}
+        </div>
         <Input
           label="Descrizione"
           value={formData.description}

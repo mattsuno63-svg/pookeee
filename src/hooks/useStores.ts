@@ -183,3 +183,44 @@ export function useDeleteStore(ownerId: string | undefined) {
 
   return mutation;
 }
+
+/**
+ * Hook per verificare in tempo reale se il nome/slug di un negozio è disponibile
+ */
+export function useCheckStoreName(name: string, excludeId?: string) {
+  const supabase = createClient();
+  const slug = generateSlug(name);
+
+  const query = useQuery({
+    queryKey: ["store-name-check", slug],
+    queryFn: async () => {
+      if (!name.trim() || name.trim().length < 3) {
+        return { available: false, reason: "too_short" };
+      }
+      
+      // Verifica nome riservato
+      if (isSlugReserved(slug)) {
+        return { available: false, reason: "reserved" };
+      }
+      
+      // Verifica se esiste già
+      let q = supabase.from("stores").select("id, name").eq("slug", slug);
+      if (excludeId) {
+        q = q.neq("id", excludeId);
+      }
+      const { data, error } = await q.maybeSingle();
+      
+      if (error) throw error;
+      
+      if (data) {
+        return { available: false, reason: "taken", existingName: data.name };
+      }
+      
+      return { available: true };
+    },
+    enabled: name.trim().length >= 3,
+    staleTime: 5000, // Cache per 5 secondi
+  });
+
+  return query;
+}
