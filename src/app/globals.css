@@ -1,0 +1,429 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ===== FONTS ===== */
+@font-face {
+  font-family: "zentry";
+  font-display: swap;
+  src: url("/fonts/zentry-regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "robert";
+  font-display: swap;
+  src: url("/fonts/robert-regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "robert";
+  font-display: swap;
+  src: url("/fonts/robert-medium.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "general";
+  font-display: swap;
+  src: url("/fonts/general.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+}
+
+/* ===== CSS VARIABLES ===== */
+:root {
+  --font-zentry: "zentry", system-ui, sans-serif;
+  --font-robert: "robert", system-ui, sans-serif;
+  --font-general: "general", system-ui, sans-serif;
+  
+  --color-background: #000000;
+  --color-foreground: #FFFFFF;
+  --color-accent: #EDFF66;
+  --color-primary: #5724FF;
+  --color-muted: rgba(255, 255, 255, 0.8);
+  --color-border: rgba(255, 255, 255, 0.2);
+}
+
+/* ===== BASE RESET ===== */
+* {
+  padding: 0;
+  margin: 0;
+  border: 0;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  min-width: 20rem;
+  color: var(--color-foreground);
+  font-family: var(--font-robert);
+  font-size: 1rem;
+  background-color: var(--color-background);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ===== SCROLLBAR ===== */
+body {
+  scrollbar-gutter: stable;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-muted);
+}
+
+/* ===== TYPOGRAPHY ===== */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: inherit;
+  font-size: inherit;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+ul, ol {
+  list-style: none;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  vertical-align: middle;
+}
+
+/* ===== FORMS ===== */
+input,
+button,
+textarea,
+select {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  color: inherit;
+  background-color: transparent;
+}
+
+input,
+textarea {
+  width: 100%;
+}
+
+button,
+select {
+  cursor: pointer;
+}
+
+/* Select stile sito */
+select {
+  padding-right: 2.5rem;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23EDFF66'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 1.25rem;
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 0.5rem;
+  color: inherit;
+}
+select:hover { border-color: rgba(255, 255, 255, 0.4); }
+select:focus { outline: none; border-color: #EDFF66; box-shadow: 0 0 0 1px #EDFF66; }
+select option { background: #000; color: #fff; }
+
+/* ===== UTILITIES ===== */
+.wrapper {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: clip;
+}
+
+.wrapper > main {
+  flex: 1 1 auto;
+}
+
+[class*="__container"] {
+  max-width: 91.875rem;
+  margin: 0 auto;
+  padding-left: 0.9375rem;
+  padding-right: 0.9375rem;
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  border: 0 !important;
+}
+
+/* ===== FONT CLASSES ===== */
+.font-zentry {
+  font-family: var(--font-zentry);
+}
+
+.font-robert {
+  font-family: var(--font-robert);
+}
+
+.font-general {
+  font-family: var(--font-general);
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes underline-in {
+  from {
+    left: 0;
+    width: 0;
+  }
+  to {
+    left: 0;
+    width: 100%;
+  }
+}
+
+@keyframes underline-out {
+  from {
+    left: 0;
+    width: 100%;
+  }
+  to {
+    left: 100%;
+    width: 0;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes slide-up {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 5px var(--color-accent);
+  }
+  50% {
+    box-shadow: 0 0 20px var(--color-accent);
+  }
+}
+
+/* ===== SCROLL LOCK ===== */
+[data-scroll-lock] body {
+  overflow: hidden;
+  touch-action: none;
+  overscroll-behavior: none;
+}
+
+/* ===== HERO STYLES ===== */
+.hero__label {
+  font-family: var(--font-zentry);
+  font-weight: 900;
+  text-transform: uppercase;
+  line-height: 0.85;
+}
+
+/* ===== DISCOVER/TILT CARD STYLES ===== */
+.discover__tilt {
+  transform-origin: 50% 50%;
+  transform-style: preserve-3d;
+  will-change: transform;
+  transition: transform 0.12s ease-out, box-shadow 0.2s ease;
+}
+
+.js-tilt.is-tilting .discover__tilt {
+  box-shadow: 0 1.125rem 2.5rem rgba(0, 0, 0, 0.35);
+}
+
+/* ===== 3D PERSPECTIVE ===== */
+.perspective-\[1500px\] {
+  perspective: 1500px;
+}
+
+.transform-style-preserve-3d {
+  transform-style: preserve-3d;
+}
+
+/* ===== MASK CLIP PATH ===== */
+.mask-clip-path {
+  will-change: width, height, border-radius;
+  pointer-events: none;
+}
+
+/* ===== BUTTON HOVER ANIMATION ===== */
+.btn {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn__label {
+  display: inline-grid;
+  align-items: center;
+  justify-items: center;
+  line-height: 1;
+  overflow: hidden;
+}
+
+.btn__main,
+.btn__alt {
+  grid-area: 1 / 1;
+  white-space: nowrap;
+  transition: transform 0.45s cubic-bezier(0.22, 0.61, 0.36, 1);
+  will-change: transform;
+}
+
+.btn__main {
+  transform: translateY(0%);
+}
+
+.btn__alt {
+  transform: translateY(120%);
+}
+
+.btn:hover .btn__main {
+  transform: translateY(-120%);
+}
+
+.btn:hover .btn__alt {
+  transform: translateY(0%);
+}
+
+/* ===== LINK UNDERLINE ANIMATION ===== */
+.link-underline {
+  position: relative;
+}
+
+.link-underline::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0;
+  height: 2px;
+  background-color: currentColor;
+  will-change: left, width;
+  animation: underline-out 0.3s ease forwards;
+}
+
+.link-underline:hover::before,
+.link-underline:focus-visible::before {
+  animation: underline-in 0.3s ease forwards;
+}
+
+/* ===== RESPONSIVE VIDEO ===== */
+video {
+  object-fit: cover;
+}
+
+/* ===== CARD GLARE EFFECT ===== */
+.discover__glare {
+  position: absolute;
+  inset: -60%;
+  z-index: 3;
+  opacity: 0;
+  mix-blend-mode: screen;
+  transition: opacity 0.15s ease;
+  background: radial-gradient(
+    circle at var(--gx, 50%) var(--gy, 50%),
+    rgba(255, 255, 255, 0.35),
+    rgba(255, 255, 255, 0) 45%
+  );
+  pointer-events: none;
+}
+
+.js-tilt:hover .discover__glare {
+  opacity: 1;
+}
+
+/* ===== PRELOADER DONE STATE ===== */
+.preloader.is-done {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* ===== SMOOTH SCROLL ===== */
+html {
+  scroll-behavior: smooth;
+}
+
+/* ===== SELECTION ===== */
+::selection {
+  background-color: var(--color-accent);
+  color: var(--color-background);
+}
+
+/* Nasconde il testo placeholder gg/mm nel date input quando vuoto */
+input[type="date"].date-no-hint:invalid::-webkit-datetime-edit-text,
+input[type="date"].date-no-hint:invalid::-webkit-datetime-edit-month-field,
+input[type="date"].date-no-hint:invalid::-webkit-datetime-edit-day-field,
+input[type="date"].date-no-hint:invalid::-webkit-datetime-edit-year-field {
+  color: transparent;
+}
+input[type="date"].date-no-hint:invalid::-webkit-datetime-edit {
+  opacity: 0.65;
+}
+
+/* Pagina tornei: angoli uniformi su Select (bottone e dropdown) */
+.tornei-select button {
+  border-radius: 1rem;
+  isolation: isolate;
+}
+.tornei-select [role="listbox"] {
+  border-radius: 1rem;
+}
